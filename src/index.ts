@@ -19,5 +19,4 @@ export * from './HTTP/Request';
 export * from './Errors/ResponseError';
 export * from './Errors/RequestError';
 export * from './Errors/ValidationError';
-export * from './Validation';
 export * from './Validation/locale';

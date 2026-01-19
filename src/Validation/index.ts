@@ -1,65 +1,40 @@
-import assign from 'lodash/assign';
-import concat from 'lodash/concat';
-import deburr from 'lodash/deburr';
-import each from 'lodash/each';
-import get from 'lodash/get';
-import greaterThan from 'lodash/gt';
-import greaterOrEqualTo from 'lodash/gte';
-import includes from 'lodash/includes';
-import isArray from 'lodash/isArray';
-import isBoolean from 'lodash/isBoolean';
-import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
-import isFinite from 'lodash/isFinite';
-import isFunction from 'lodash/isFunction';
-import isInteger from 'lodash/isInteger';
-import isNaN from 'lodash/isNaN';
-import isNil from 'lodash/isNil';
-import isNull from 'lodash/isNull';
-import isNumber from 'lodash/isNumber';
-import isObject from 'lodash/isObject';
-import isString from 'lodash/isString';
-import isUndefined from 'lodash/isUndefined';
-import lessThan from 'lodash/lt';
-import lessOrEqualTo from 'lodash/lte';
-import pick from 'lodash/pick';
-import set from 'lodash/set';
-import size from 'lodash/size';
-import split from 'lodash/split';
-import stubTrue from 'lodash/stubTrue';
-import template from 'lodash/template';
-import toLower from 'lodash/toLower';
-import toNumber from 'lodash/toNumber';
-import * as dates from 'date-fns';
-import {
-    format as formatDate,
-    isAfter as isAfterDate,
-    isBefore as isBeforeDate,
-    isValid as isValidDate,
-} from "date-fns";
+import assign from 'lodash-es/assign';
+import concat from 'lodash-es/concat';
+import each from 'lodash-es/each';
+import get from 'lodash-es/get';
+import greaterThan from 'lodash-es/gt';
+import greaterOrEqualTo from 'lodash-es/gte';
+import includes from 'lodash-es/includes';
+import isArray from 'lodash-es/isArray';
+import isBoolean from 'lodash-es/isBoolean';
+import isEmpty from 'lodash-es/isEmpty';
+import isEqual from 'lodash-es/isEqual';
+import isFinite from 'lodash-es/isFinite';
+import isFunction from 'lodash-es/isFunction';
+import isInteger from 'lodash-es/isInteger';
+import isNaN from 'lodash-es/isNaN';
+import isNil from 'lodash-es/isNil';
+import isNull from 'lodash-es/isNull';
+import isNumber from 'lodash-es/isNumber';
+import isObject from 'lodash-es/isObject';
+import isString from 'lodash-es/isString';
+import isUndefined from 'lodash-es/isUndefined';
+import lessThan from 'lodash-es/lt';
+import lessOrEqualTo from 'lodash-es/lte';
+import pick from 'lodash-es/pick';
+import set from 'lodash-es/set';
+import size from 'lodash-es/size';
+import split from 'lodash-es/split';
+import stubTrue from 'lodash-es/stubTrue';
+import template from 'lodash-es/template';
+import toLower from 'lodash-es/toLower';
+import toNumber from 'lodash-es/toNumber';
 
-// eslint-disable-next-line @typescript-eslint/camelcase
-import {Bundle, en_us} from './locale';
-import isAlpha from 'validator/lib/isAlpha';
-import isAlphanumeric from 'validator/lib/isAlphanumeric';
-import isBase64 from 'validator/lib/isBase64';
-import isCreditCard from 'validator/lib/isCreditCard';
-import isEmail from 'validator/lib/isEmail';
-import isIP from 'validator/lib/isIP';
-import isISO8601 from 'validator/lib/isISO8601';
-import isJSON from 'validator/lib/isJSON';
-import isURL from 'validator/lib/isURL';
-import isUUID from 'validator/lib/isUUID';
+import {Bundle} from './locale';
+import isEmail from 'validator/es/lib/isEmail';
+
 import Model from '../Structures/Model';
 
-// Parses any given value as a date.
-const parseDate = (value: any, format?: string): Date => {
-    if (isString(value)) {
-        return format ? dates.parse(value, format, new Date()) : dates.parseISO(value);
-    } else {
-        return dates.toDate(value);
-    }
-};
 
 // We want to set the messages a superglobal so that imports across files
 // reference the same messages object.
@@ -82,8 +57,6 @@ class GlobalMessages {
         this.$locale = 'en-us';
         this.$fallback = 'en-us';
         this.$locales = {};
-
-        this.register(en_us);
     }
 
     /**
@@ -101,7 +74,7 @@ class GlobalMessages {
     register(bundle: Bundle): void {
         let locale: string = toLower(bundle.locale);
 
-        each(get(bundle, 'messages', {}), (message, name): void => {
+        each(get(bundle, 'messages', {}), (message: string, name: string): void => {
             set(this.$locales, [locale, name], template(message));
         });
     }
@@ -320,37 +293,6 @@ export const rule: RuleFunction = function (config: Config): Rule {
  */
 
 /**
- * Checks if the value is after a given date string or `Date` object.
- */
-export const after = function (date: Date): Rule {
-    return rule({
-        name: 'after',
-        data: {date},
-        test: (value: string | number | Date): boolean => isAfterDate(parseDate(value), parseDate(date)),
-    });
-};
-
-/**
- * Checks if a value only has letters.
- */
-export const alpha: Rule = rule({
-    name: 'alpha',
-    test: (value: any): boolean => {
-        return isString(value) && isAlpha(deburr(value));
-    },
-});
-
-/**
- * Checks if a value only has letters or numbers.
- */
-export const alphanumeric: Rule = rule({
-    name: 'alphanumeric',
-    test: (value: any): boolean => {
-        return isString(value) && isAlphanumeric(deburr(value));
-    },
-});
-
-/**
  * Checks if a value is an array.
  */
 export const array: Rule = rule({
@@ -359,109 +301,11 @@ export const array: Rule = rule({
 });
 
 /**
- * Checks if a value is a string consisting only of ASCII characters.
- */
-export const ascii: Rule = rule({
-    name: 'ascii',
-    test: (value: any): boolean => isString(value) && /^[\x00-\x7F]+$/.test(value),
-});
-
-/**
- * Checks if a value is a valid Base64 string.
- */
-export const base64: Rule = rule({
-    name: 'base64',
-    test: (value: any): boolean => isString(value) && isBase64(value),
-});
-
-/**
- * Checks if a value is before a given date string or `Date` object.
- */
-export const before = function (date: Date): Rule {
-    return rule({
-        name: 'before',
-        data: {date},
-        test: (value: string | number | Date): boolean => isBeforeDate(parseDate(value), parseDate(date)),
-    });
-};
-
-/**
- * Checks if a value is between a given minimum or maximum, inclusive by default.
- */
-export const between: RuleFunction = function (min: string | number | Date, max: string | number | Date, inclusive: boolean = true): Rule {
-    let _min: string | number | Date = +(isString(min) ? parseDate(min) : min);
-    let _max: string | number | Date = +(isString(max) ? parseDate(max) : max);
-
-    return rule({
-        data: {min, max},
-        name: inclusive ? 'between_inclusive' : 'between',
-        test: (value: any): boolean => {
-            let _value: number = +(isString(value) ? parseDate(value) : value);
-
-            return inclusive
-                ? greaterOrEqualTo(_value, _min) && lessOrEqualTo(_value, _max)
-                : greaterThan(_value, _min) && lessThan(_value, _max);
-        },
-    });
-};
-
-/**
  * Checks if a value is a boolean (strictly true or false).
  */
 export const boolean: Rule = rule({
     name: 'boolean',
     test: isBoolean,
-});
-
-/**
- * Checks if a value is a valid credit card number.
- */
-export const creditcard: Rule = rule({
-    name: 'creditcard',
-    test: (value: any): boolean => isString(value) && isCreditCard(value),
-});
-
-/**
- * Checks if a value is parseable as a date.
- */
-export const date: Rule = rule({
-    name: 'date',
-    test: (value: string | number | Date): boolean => {
-        return isValidDate(parseDate(value));
-    },
-});
-
-/**
- * Checks if a value matches the given date format.
- *
- * @see https://date-fns.org/v2.0.0-alpha.9/docs/format
- */
-export const dateformat: RuleFunction = function (format): Rule {
-    return rule({
-        name: 'dateformat',
-        data: {format},
-        test: (value: string): boolean => {
-            try {
-                return isValidDate(parseDate(value.toString(), format))
-                    && formatDate(parseDate(value.toString(), format), format) === value.toString();
-
-            } catch (error) {
-                if (error instanceof RangeError) {
-                    return false;
-                } else {
-                    throw error;
-                }
-            }
-        },
-    });
-};
-
-/**
- * Checks if a value is not `undefined`
- */
-export const defined: Rule = rule({
-    name: 'defined',
-    test: (value: any): boolean => !isUndefined(value),
 });
 
 /**
@@ -531,22 +375,6 @@ export const integer: Rule = rule({
 });
 
 /**
- * Checks if a value is a valid IP address.
- */
-export const ip: Rule = rule({
-    name: 'ip',
-    test: (value: any): boolean => isString(value) && isIP(value),
-});
-
-/**
- * Checks if a value is a zero-length string.
- */
-export const isblank: Rule = rule({
-    name: 'isblank',
-    test: (value: any): boolean => value === '',
-});
-
-/**
  * Checks if a value is `null` or `undefined`.
  */
 export const isnil: Rule = rule({
@@ -560,22 +388,6 @@ export const isnil: Rule = rule({
 export const isnull: Rule = rule({
     name: 'isnull',
     test: isNull,
-});
-
-/**
- * Checks if a value is a valid ISO8601 date string.
- */
-export const iso8601: Rule = rule({
-    name: 'iso8601',
-    test: (value: any): boolean => isString(value) && isISO8601(value),
-});
-
-/**
- * Checks if a value is valid JSON.
- */
-export const json: Rule = rule({
-    name: 'json',
-    test: (value: any): boolean => isString(value) && isJSON(value),
 });
 
 /**
@@ -629,17 +441,6 @@ export const lte: RuleFunction = function (max: any): Rule {
 };
 
 /**
- * Checks if a value matches a given regular expression string or RegExp.
- */
-export const match: RuleFunction = function (pattern: string | RegExp): Rule {
-    return rule({
-        name: 'match',
-        data: {pattern},
-        test: (value: string): boolean => (new RegExp(pattern)).test(value),
-    });
-};
-
-/**
  * Alias for `lte`.
  */
 export const max: RuleFunction = function (max: any): Rule {
@@ -652,14 +453,6 @@ export const max: RuleFunction = function (max: any): Rule {
 export const min: RuleFunction = function (min: any): Rule {
     return gte(min);
 };
-
-/**
- * Checks if a value is negative.
- */
-export const negative: Rule = rule({
-    name: 'negative',
-    test: (value: any): boolean => toNumber(value) < 0,
-});
 
 /**
  *
@@ -719,38 +512,11 @@ export const required: Rule = rule({
 });
 
 /**
- * Checks if a value equals another attribute's value.
- */
-export const same: RuleFunction = function (other: string): Rule {
-    return rule({
-        name: 'same',
-        data: {other},
-        test: (value: any, attribute: string, model: Model): boolean => isEqual(value, model.get(other)),
-    });
-};
-
-/**
  * Checks if a value is a string.
  */
 export const string: Rule = rule({
     name: 'string',
     test: isString,
-});
-
-/**
- * Checks if a value is a valid URL string.
- */
-export const url: Rule = rule({
-    name: 'url',
-    test: (value: any): boolean => isString(value) && isURL(value),
-});
-
-/**
- * Checks if a value is a valid UUID.
- */
-export const uuid: Rule = rule({
-    name: 'uuid',
-    test: (value: any): boolean => isString(value) && isUUID(value),
 });
 
 declare global {

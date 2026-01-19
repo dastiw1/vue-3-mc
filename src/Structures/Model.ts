@@ -1,33 +1,33 @@
 import { nextTick } from 'vue';
 import { set as vueSet, del as vueDel } from 'vue-demi';
-import castArray from 'lodash/castArray';
-import cloneDeep from 'lodash/cloneDeep';
-import defaults from 'lodash/defaults';
-import defaultTo from 'lodash/defaultTo';
-import each from 'lodash/each';
-import filter from 'lodash/filter';
-import first from 'lodash/first';
-import flow from 'lodash/flow';
-import get from 'lodash/get';
-import has from 'lodash/has';
-import head from 'lodash/head';
-import invert from 'lodash/invert';
-import isArray from 'lodash/isArray';
-import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
-import isFunction from 'lodash/isFunction';
-import isNil from 'lodash/isNil';
-import isObject from 'lodash/isObject';
-import isObjectLike from 'lodash/isObjectLike';
-import isPlainObject from 'lodash/isPlainObject';
-import isString from 'lodash/isString';
-import isUndefined from 'lodash/isUndefined';
-import keys from 'lodash/keys';
-import mapValues from 'lodash/mapValues';
-import merge from 'lodash/merge';
-import once from 'lodash/once';
-import pick from 'lodash/pick';
-import values from 'lodash/values';
+import castArray from 'lodash-es/castArray';
+import cloneDeep from 'lodash-es/cloneDeep';
+import defaults from 'lodash-es/defaults';
+import defaultTo from 'lodash-es/defaultTo';
+import each from 'lodash-es/each';
+import filter from 'lodash-es/filter';
+import first from 'lodash-es/first';
+import flow from 'lodash-es/flow';
+import get from 'lodash-es/get';
+import has from 'lodash-es/has';
+import head from 'lodash-es/head';
+import invert from 'lodash-es/invert';
+import isArray from 'lodash-es/isArray';
+import isEmpty from 'lodash-es/isEmpty';
+import isEqual from 'lodash-es/isEqual';
+import isFunction from 'lodash-es/isFunction';
+import isNil from 'lodash-es/isNil';
+import isObject from 'lodash-es/isObject';
+import isObjectLike from 'lodash-es/isObjectLike';
+import isPlainObject from 'lodash-es/isPlainObject';
+import isString from 'lodash-es/isString';
+import isUndefined from 'lodash-es/isUndefined';
+import keys from 'lodash-es/keys';
+import mapValues from 'lodash-es/mapValues';
+import merge from 'lodash-es/merge';
+import once from 'lodash-es/once';
+import pick from 'lodash-es/pick';
+import values from 'lodash-es/values';
 
 import Base, {HttpMethods, Options, RequestOperation, __} from './Base';
 import Collection from './Collection';
@@ -701,7 +701,7 @@ class Model extends Base {
 
                 // Check to see if we should yield only the first error.
                 if (this.getOption('useFirstErrorOnly') && !isEmpty(errors)) {
-                    return first(errors)!;
+                    return first(errors) as ValidationResultError;
                 }
 
                 return errors;

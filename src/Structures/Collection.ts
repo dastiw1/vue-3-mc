@@ -1,35 +1,35 @@
 import { set as vueSet, del as vueDel } from 'vue-demi';
-import countBy from 'lodash/countBy';
-import defaultsDeep from 'lodash/defaultsDeep';
-import each from 'lodash/each';
-import every from 'lodash/every';
-import filter from 'lodash/filter';
-import find from 'lodash/find';
-import findIndex from 'lodash/findIndex';
-import first from 'lodash/first';
-import get from 'lodash/get';
-import has from 'lodash/has';
-import isArray from 'lodash/isArray';
-import isEmpty from 'lodash/isEmpty';
-import isFunction from 'lodash/isFunction';
-import isNil from 'lodash/isNil';
-import isObject from 'lodash/isObject';
-import isPlainObject from 'lodash/isPlainObject';
-import join from 'lodash/join';
-import keyBy from 'lodash/keyBy';
-import last from 'lodash/last';
-import map from 'lodash/map';
-import max from 'lodash/max';
-import merge from 'lodash/merge';
-import method from 'lodash/method';
-import reduce from 'lodash/reduce';
-import set from 'lodash/set';
-import size from 'lodash/size';
-import sortBy from 'lodash/sortBy';
-import sumBy from 'lodash/sumBy';
-import toSafeInteger from 'lodash/toSafeInteger';
-import unset from 'lodash/unset';
-import values from 'lodash/values';
+import countBy from 'lodash-es/countBy';
+import defaultsDeep from 'lodash-es/defaultsDeep';
+import each from 'lodash-es/each';
+import every from 'lodash-es/every';
+import filter from 'lodash-es/filter';
+import find from 'lodash-es/find';
+import findIndex from 'lodash-es/findIndex';
+import first from 'lodash-es/first';
+import get from 'lodash-es/get';
+import has from 'lodash-es/has';
+import isArray from 'lodash-es/isArray';
+import isEmpty from 'lodash-es/isEmpty';
+import isFunction from 'lodash-es/isFunction';
+import isNil from 'lodash-es/isNil';
+import isObject from 'lodash-es/isObject';
+import isPlainObject from 'lodash-es/isPlainObject';
+import join from 'lodash-es/join';
+import keyBy from 'lodash-es/keyBy';
+import last from 'lodash-es/last';
+import map from 'lodash-es/map';
+import max from 'lodash-es/max';
+import merge from 'lodash-es/merge';
+import method from 'lodash-es/method';
+import reduce from 'lodash-es/reduce';
+import set from 'lodash-es/set';
+import size from 'lodash-es/size';
+import sortBy from 'lodash-es/sortBy';
+import sumBy from 'lodash-es/sumBy';
+import toSafeInteger from 'lodash-es/toSafeInteger';
+import unset from 'lodash-es/unset';
+import values from 'lodash-es/values';
 
 import Base, {Options, RequestOperation, __} from './Base';
 import Model, {ValidationResultErrorFinalResult} from './Model';
@@ -570,7 +570,7 @@ class Collection extends Base {
      * @return {Model[]}
      */
     map<T = Model>(callback: string | ((model: Model) => T)): T[] {
-        return map<Model, T>(this.models, callback as _.ArrayIterator<Model, T>);
+        return map<Model, T>(this.models, callback as ((model: Model) => T));
     }
 
     // TODO:  as (string | _.ArrayIterator<Model, T>)

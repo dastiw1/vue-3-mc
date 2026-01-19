@@ -4,6 +4,7 @@
     "target": "es6",
     "sourceMap": true,
     "strict": true,
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "declaration": true,
